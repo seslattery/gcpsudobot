@@ -1,0 +1,35 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: GCP_SUDOBOT
+  long_description: A slack bot used to grant conditional short lived IAM grants to users in GCP. It registers a /sudo slash command, that can then be used to create a request for approval with a Reason, Role, and Resource needed. 
+  description: Conditional IAM Grants for GCP
+  background_color: "#e33b3b"
+features:
+  bot_user:
+    display_name: GCP_SUDOBOT
+    always_online: false
+  slash_commands:
+    - command: /sudo
+      url: https://pig-rare-chamois.ngrok-free.app/SlashHandler
+      description: GCP Conditional IAM Grants
+      usage_hint: please write a reason here
+      should_escape: true
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read
+      - chat:write
+      - chat:write.customize
+      - commands
+      - users:read
+      - users.profile:read
+      - users:read.email
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://pig-rare-chamois.ngrok-free.app/ActionHandler
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
