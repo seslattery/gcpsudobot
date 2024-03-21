@@ -1,6 +1,6 @@
 module gcpsudobot
 
-go 1.22
+go 1.21
 
 require (
 	github.com/GoogleCloudPlatform/functions-framework-go v1.8.0
