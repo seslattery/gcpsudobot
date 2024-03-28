@@ -22,7 +22,7 @@ That message can be approved or denied. If approved, the bot will do a condition
 
 PolicyRules is the structure defining the authorization the slackbot will allow.  It consists of a list of Rules, each of which consist of a map of Groups, Roles, and Resources. Without PolicyRules defined, every request will be denied by default. There is no support for wildcards, individual membership, or hierarchical rules. 
 
-A user requesting to escalate their permissions must be in the correct google group, and the role and resource they requested must be in a rule that matches that group.
+A user requesting to escalate their permissions must be in the correct google group, and the role and resource they requested must be in a rule that includes that group.
 
 The `POLCIY_RULES` env var must be set to a valid JSON containing the configuration for authorization that should be used. 
 
@@ -111,9 +111,12 @@ One of the critical functionalities of this bot is to verify a user requesting p
 
 This slackbot is built to allow engineers to elevate their IAM permissions in GCP according to a predefined policy, with another user having to approve the request. These elevated permissions are conditionally granted for 2 hours, but that is configurable.
 
-The PolicyRule is a list of Rules objects composed of the Groups,Roles, and Resources that Rule authorizes. By default it deny’s all authorization requests, unless a specific rule matches.  There is no support for wildcards. Roles generally map to custom IAM roles in GCP.  These PolicyRules live in code, and can only be updated with a new commit and deployment of the code. This ensures that a rogue actor can’t define arbitrary Policies. It’s easier to spend more time upfront scrutinizing the policy because a review will only be required once for each new Rule.
+The PolicyRule is a list of Rules objects composed of the Groups,Roles, and Resources that Rule authorizes. By default it denies all authorization requests, unless a specific rule matches.  There is no support for wildcards. Roles generally map to custom IAM roles in GCP, created at the org level. Since the policy rules are defined as an env var, it's important for the configuration to be defined in code so that the normal changemanagement procedures apply. It is recommended to configure GITOWNERS on the file where POLICY_RULES is defined and require multiple reviewers. It’s easier to spend more time upfront scrutinizing the policy because a review will only be required once for each new Rule.
 
-The slackbot is deployed as an unauthenticated cloud function, so it is open to the internet. That access is locked down by verifying the requests came from slack and rejecting all others. When registering the bot to our slack workspace, a unique signing secret is generated.  All requests from slack to the bot are verified by a signing secret unique to this instance of the bot. Any unverified requests to the slackbot result in an error message.  Additionally all requests to and from slack happen over HTTPS.
+The slackbot is deployed as an unauthenticated cloud function, so it is open to the internet. That access is locked down by verifying the requests came from slack and rejecting all others. When registering the bot to our slack workspace, a unique signing secret is generated.  All requests from slack to the bot are verified by a signing secret unique to this instance of the bot. Any unverified requests to the slackbot result in an error message.  Additionally all requests to and from slack happen over HTTPS. 
+
+An additional mechanism to prevent access from the entire internet is to setup an IP Allowlist, by using a CloudNAT with a static IP from the Cloud Function, it can appear that traffic to Slack is coming from a stable IP. The IP Allowlist can then be configured in the slack manifest. https://cloud.google.com/functions/docs/networking/network-settings#associate-static-ip & https://api.slack.com/authentication/best-practices#configure-allowed-ip
+
 
 Authentication is provided primarily by Slack.  The workspace domain you use to login to slack should be configured as the `VALID_DOMAIN` env var. This prevents users from other domains being able to approve or have requests approved.
 
@@ -125,7 +128,13 @@ Only `VALID_DOMAIN` email addresses can be used to request or approve.
 
 The authorization checks happen both when creating the escalation request, and again after the approval is submitted.  This makes it so that even if somehow a malicious slack response was sent, at worst it can only grant permissions that are valid according to the policy.
 
-The bot itself can only grant access to resources at its level or below it’s service account in the GCP hierarchy. (Technically we could add that service account in multiple spots, but usually easier to have it in one spot and propagate down the tree).
+The bot itself can only grant access to resources at its level or below it’s service account in the GCP hierarchy. (Technically the service account could be added in multiple spots, but usually easier to have it in one spot and propagate down the tree). The service account must be granted `roles/resourcemanager.projectIamAdmin` and/or the following permissions if wanting to control changes at the organizational level: 
+
+```
+    resourcemanager.organizations.get
+    resourcemanager.organizations.getIamPolicy
+    resourcemanager.organizations.setIamPolicy
+```
 
 The google group lookup needs to utilize the admin sdk’s directory api. This endpoint requires a user to be a Google Workspace Admin.  This bot requires it’s service account to have been granted domain-wide delegation in order to impersonate a Google Workspace User.  Critically, when setting up the domain-wide delegation, it’s important to set it’s oauth scopes to only allow read only access to see the members of Google Groups. This scope is also set in the bot’s code, but that could potentially be changed by non-Workspace Administrators.
 
@@ -165,6 +174,10 @@ Allow self approval for certain rules
 Look-up current on-call to allow more aggressive permission escalations
 Add 2fa with TOTP to certain rolls
 
+Finish implementing the IP allowlist in slack
+mTLS 
+Slack Token Rotation - seems hard to manage without a long lived process as we'd be responsible for exchanging the token periodically
+
 ## Known issues
 
 The bot currently doesn't cleanup any of it's conditional grants. The IAM grants may stop working at 50+ grants on a single user, in which case you just need to manually remove them. A future improvement should be adding TTL's to the grants to delete them a certain time after they've expired.
@@ -172,5 +185,3 @@ The bot currently doesn't cleanup any of it's conditional grants. The IAM grants
 ## Special Thanks
 
 Want to give thanks to Pachyderm for allowing me to open source some internal tooling I built while I worked there, including an early predecessor of this bot.
-
-
