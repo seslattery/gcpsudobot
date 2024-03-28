@@ -170,13 +170,12 @@ Quick overview of the codebase can be found here:
 
 ## Future Improvements:
 
-Allow self approval for certain rules
-Look-up current on-call to allow more aggressive permission escalations
-Add 2fa with TOTP to certain rolls
-
-Finish implementing the IP allowlist in slack
-mTLS 
-Slack Token Rotation - seems hard to manage without a long lived process as we'd be responsible for exchanging the token periodically
+* Allow self approval for certain rules
+* Look-up current on-call to allow more aggressive permission escalations
+* Add 2fa with TOTP to certain rolls
+* Finish implementing the IP allowlist in slack
+* mTLS
+* Slack Token Rotation - seems hard to manage without a long lived process as we'd be responsible for exchanging the token periodically
 
 ## Known issues
 
