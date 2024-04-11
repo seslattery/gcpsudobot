@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"gcpsudobot/config"
-	. "gcpsudobot/types"
+	"github.com/seslattery/gcpsudobot/config"
+	. "github.com/seslattery/gcpsudobot/types"
 
 	"github.com/google/go-cmp/cmp"
 	admin "google.golang.org/api/admin/directory/v1"

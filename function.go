@@ -11,10 +11,10 @@ import (
 	"net/http"
 	"os"
 
-	"gcpsudobot/authz"
-	"gcpsudobot/config"
-	"gcpsudobot/gcp"
-	"gcpsudobot/slacking"
+	"github.com/seslattery/gcpsudobot/authz"
+	"github.com/seslattery/gcpsudobot/config"
+	"github.com/seslattery/gcpsudobot/gcp"
+	"github.com/seslattery/gcpsudobot/slacking"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/slack-go/slack"

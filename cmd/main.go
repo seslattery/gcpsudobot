@@ -1,10 +1,11 @@
 package main
 
 import (
-	"gcpsudobot"
 	"log"
 	"log/slog"
 	"net/http"
+
+	"github.com/seslattery/gcpsudobot"
 )
 
 func main() {

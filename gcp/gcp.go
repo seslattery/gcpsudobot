@@ -8,8 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"gcpsudobot/config"
-	. "gcpsudobot/types"
+	. "github.com/seslattery/gcpsudobot/types"
+
+	"github.com/seslattery/gcpsudobot/config"
 
 	admin "google.golang.org/api/admin/directory/v1"
 	"google.golang.org/api/cloudresourcemanager/v1"

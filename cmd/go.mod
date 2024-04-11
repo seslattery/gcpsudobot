@@ -4,9 +4,9 @@ go 1.21
 
 toolchain go1.21.0
 
-replace gcpsudobot => ../../gcpsudobot
+replace github.com/seslattery/gcpsudobot => ../../gcpsudobot
 
-require gcpsudobot v0.0.0-00010101000000-000000000000
+require github.com/seslattery/gcpsudobot v0.0.0-00010101000000-000000000000
 
 require (
 	cloud.google.com/go/compute v1.25.1 // indirect

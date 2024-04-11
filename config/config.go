@@ -6,8 +6,9 @@ import (
 	"log/slog"
 	"strconv"
 
-	. "gcpsudobot/types"
 	"os"
+
+	. "github.com/seslattery/gcpsudobot/types"
 )
 
 type Config struct {

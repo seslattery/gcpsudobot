@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	. "gcpsudobot/types"
+	. "github.com/seslattery/gcpsudobot/types"
 
 	admin "google.golang.org/api/admin/directory/v1"
 	"google.golang.org/api/cloudresourcemanager/v1"

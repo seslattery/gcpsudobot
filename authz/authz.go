@@ -6,9 +6,9 @@ import (
 	"log/slog"
 	"strings"
 
-	"gcpsudobot/config"
-	"gcpsudobot/gcp"
-	. "gcpsudobot/types"
+	"github.com/seslattery/gcpsudobot/config"
+	"github.com/seslattery/gcpsudobot/gcp"
+	. "github.com/seslattery/gcpsudobot/types"
 )
 
 func AuthorizeRequest(ctx context.Context, p *PolicyRules, r *EscalationRequest, gs *gcp.Service) (bool, error) {

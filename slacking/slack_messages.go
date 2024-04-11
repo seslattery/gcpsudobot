@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gcpsudobot/config"
-	. "gcpsudobot/types"
+	"github.com/seslattery/gcpsudobot/config"
+	. "github.com/seslattery/gcpsudobot/types"
 
 	"github.com/slack-go/slack"
 )
