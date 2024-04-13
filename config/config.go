@@ -56,7 +56,7 @@ func init() {
 
     var gcpServiceAccount = "service-account@gmail.com"
 	if os.Getenv("GCP_SERVICE_ACCOUNT") != "" {
-		gsuiteAdmin = os.Getenv("GCP_SERVICE_ACCOUNT")
+		gcpServiceAccount = os.Getenv("GCP_SERVICE_ACCOUNT")
 	}
 
 	var EscalationPolicy *PolicyRules
