@@ -14,6 +14,7 @@ import (
 type Config struct {
 	ValidDomain            string
 	GsuiteAdmin            string
+	ServiceAccount 		   string
 	SlackChannel           string
 	SlackSigningSecret     string
 	SlackToken             string
@@ -53,6 +54,11 @@ func init() {
 		gsuiteAdmin = os.Getenv("GSUITE_ADMIN_ACCOUNT_TO_IMPERSONATE")
 	}
 
+    var gcpServiceAccount = "service-account@gmail.com"
+	if os.Getenv("GCP_SERVICE_ACCOUNT") != "" {
+		gsuiteAdmin = os.Getenv("GCP_SERVICE_ACCOUNT")
+	}
+
 	var EscalationPolicy *PolicyRules
 	if os.Getenv("POLICY_RULES") == "" {
 		EscalationPolicy = TestEscalationPolicy
@@ -65,6 +71,7 @@ func init() {
 	Cfg = &Config{
 		ValidDomain:            validDomain,
 		GsuiteAdmin:            gsuiteAdmin,
+		ServiceAccount:  		gcpServiceAccount,
 		SlackChannel:           os.Getenv("SLACK_CHANNEL"),
 		MockGoogleAPIs:         b,
 		SlackSigningSecret:     os.Getenv("SLACK_SECRET"),

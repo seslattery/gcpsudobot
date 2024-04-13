@@ -167,9 +167,10 @@ type googleService struct {
 func newGoogleService() (*googleService, error) {
 	ctx := context.Background()
 	ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
-		// User must be a GSuite admin.
-		TargetPrincipal: config.Cfg.GsuiteAdmin,
+		TargetPrincipal: config.Cfg.ServiceAccount,
 		Scopes:          []string{admin.AdminDirectoryGroupReadonlyScope},
+		// User must be a GSuite admin.
+		Subject: config.Cfg.GsuiteAdmin,
 	})
 	if err != nil {
 		slog.Error(fmt.Sprintf("can't initialize admin sdk %v", err))
