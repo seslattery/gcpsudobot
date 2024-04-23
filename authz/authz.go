@@ -18,7 +18,7 @@ func AuthorizeRequest(ctx context.Context, p *PolicyRules, r *EscalationRequest,
 	groups, err := gcp.ListGoogleGroups(ctx, r.Requestor, config.Cfg.ValidDomain, gs)
 	r.Groups = groups
 	if err != nil {
-		return false, fmt.Errorf("can't get group membership for user: %v", r.Requestor)
+		return false, fmt.Errorf("can't get group membership for user: %v: %s", r.Requestor, err)
 	}
 	if authz(p, r) {
 		return true, nil

@@ -190,12 +190,13 @@ func newGoogleService() (*googleService, error) {
 	return &googleService{cloudResourceManagerService, admin.NewGroupsService(srv)}, nil
 }
 
-// GoogleClient is concrete implementation of IAMer and Grouper
-// GetGroupMembership(g Grouper)
-// ConditionalBindIAMPolicy(i IAMer)
+// googleService is concrete implementation of IAMer and Grouper
+// ListGoogleGroups(g Grouper)
+// BindIAMPolicy(i IAMer)
 
 func (g *googleService) list(domain, requestor string) (*admin.Groups, error) {
-	return g.groupsClient.List().Domain(domain).UserKey(requestor).Do()
+	// return g.groupsClient.List().Domain(domain).UserKey(requestor).Do()
+	return g.groupsClient.List().UserKey(requestor).Do()
 }
 
 func (g *googleService) getIamPolicy(ctx context.Context, resource Resource, getiampolicyrequest *cloudresourcemanager.GetIamPolicyRequest) (*cloudresourcemanager.Policy, error) {
